@@ -1,0 +1,15 @@
+--- a/APlatformIndicators.Original.plugin.js
++++ b/APlatformIndicators.Fixed.plugin.js
+@@ -830,6 +830,12 @@
+ 
+     const sessions = Hooks.useStateFromStores([SessionsStore], () => SessionsStore.getSessions());
+ 
++    // Subscribe to presence changes for other users. Return a primitive snapshot
++    // so changes are detected even if Discord mutates the underlying object.
++    const presenceSnapshot = Hooks.useStateFromStores(
++        [PresenceStore],
++        () => JSON.stringify(PresenceStore.getState().clientStatuses[userId] ?? {})
++    );
+ 
+     const iconStates = Settings.get("icons", {});
+ 
